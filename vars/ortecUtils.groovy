@@ -2,6 +2,9 @@ void prepareVM(String vmName, String cleanSnapshotName) {
     if (cleanSnapshotName == '') {
         cleanSnapshotName = 'JenkinsClean'    
     }
+    
+    // TODO check if vm is locked
+    
     vSphere buildStep: [$class: 'RevertToSnapshot', snapshotName: cleanSnapshotName, vm: vmName], serverName: 'HillView'
     
     for (slave in Hudson.instance.slaves) {
