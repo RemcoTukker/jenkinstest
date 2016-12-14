@@ -1,3 +1,19 @@
+void prepareVM(String vmName, String cleanSnapshotName) {
+    if (cleanSnapshotName == '') {
+        cleanSnapshotName = 'JenkinsClean'    
+    }
+    vSphere buildStep: [$class: 'RevertToSnapshot', snapshotName: cleanSnapshotName, vm: vmName], serverName: 'HillView'
+    
+    for (slave in Hudson.instance.slaves) {
+        if (slave.computer.name == vmName) { // TODO check capitalization; the VMname and slavename are not the same thing after all..
+            echo 'disconnecting ' + slave.computer.name
+            slave.computer.disconnect()            
+        }
+    }
+    
+    vSphere buildStep: [$class: 'PowerOn', timeoutInSeconds: 180, vm: vmName], serverName: 'HillView'
+}
+
 String mountWorkspace(String mountPoint) {
     if (mountPoint == '') {
         mountPoint = '/src2'
