@@ -14,7 +14,7 @@ void prepareVM(String vmName, String cleanSnapshotName) {
         }
     }
     
-    vSphere buildStep: [$class: 'PowerOn', timeoutInSeconds: 180, vm: vmName], serverName: 'HillView'
+    vSphere buildStep: [$class: 'PowerOn', timeoutInSeconds: 300, vm: vmName], serverName: 'HillView'
 }
 
 String mountWorkspace(String mountPoint) {
